@@ -1,0 +1,117 @@
+﻿body {
+    font-family: Calibri, Arial, sans-serif;
+    margin: 0;
+    background-color: #d3d3d3;
+}
+
+#Header {
+    background-color: #3DA848;
+    color: #FFFFFF;
+    height: 185px;
+}
+
+#Title {
+    border: 1px #3DA848 solid;
+    width: 500px;
+    height: 150px;
+    text-align: center;
+}
+
+#Title h1 {
+    font-family: Courier New, monospace;
+    font-size: 60px;
+    color: #c4f0c8;
+    margin-bottom: 0;
+}
+
+#Title h3 {
+    margin-top: 0;
+}
+
+ul.nav {
+    float: left;
+    margin: 0;
+    padding: 0;
+    height: 30px;
+}
+
+ul.nav-right {
+    float: right;
+    margin-right: 5px;
+}
+
+ul.nav li {
+    display: block;
+    float: left;
+    margin: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.admin-button {
+    background-color: #ffa500 !important;
+    color: #000000;
+}
+
+.menu-button {
+    padding: 3px 6px;
+    background-color: #55e964;
+    color: #000000;
+}
+
+.menu-button:hover {
+    background-color: #5af66a;
+}
+
+.menu-button a, .menu-button {
+    text-decoration: none;
+    color: #000000;
+}
+
+#LoginInfo {
+    float: right;
+    margin-right: 10px;
+    height: 30px;
+    padding: 5px;
+}
+
+#TestBar {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: yellowgreen;
+}
+
+#Content {
+    padding: 20px 10px;
+    background-color: #FFFFFF;
+}
+
+#Footer {
+    padding: 0px 10px;
+    background-color: #d3d3d3;
+    height: 100px;
+    font-size: 70%
+}
+
+#Content table {
+    border: 1px #d3d3d3 solid;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+#Content table td, #Content table th {
+    padding: 2px 8px;
+}
+
+#Content table tbody tr:nth-child(odd) {
+    background-color: #b4ddb8;
+}
+
+.form-group {
+    padding-bottom: 4px;
+}
+
+.error {
+    color: #ff7b4a;
+}

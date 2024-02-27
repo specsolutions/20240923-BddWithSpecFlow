@@ -1,0 +1,115 @@
+﻿@page
+@model BddWithSpecFlow.GeekPizza.Web.Models.OrderDetailsViewModel
+@using BddWithSpecFlow.GeekPizza.Web.Utils
+@using BddWithSpecFlow.GeekPizza.Web.Services
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<h2>Order Details</h2>
+
+<form id="OrderDetailsForm">
+    <div class="form-horizontal">
+        <hr />
+        @if (ViewBag.ErrorMessage != null)
+        {
+            @Html.ValidationSummary(true)
+            <div class="error">@ViewBag.ErrorMessage</div>
+        }
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DeliveryStreetAddress, new { @class = "control-label" })
+            <div class="control-input">
+                @Html.EditorFor(model => model.DeliveryStreetAddress)
+                @Html.ValidationMessageFor(model => model.DeliveryStreetAddress)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DeliveryCity, new { @class = "control-label" })
+            <div class="control-input">
+                @Html.EditorFor(model => model.DeliveryCity)
+                @Html.ValidationMessageFor(model => model.DeliveryCity)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DeliveryZip, new { @class = "control-label" })
+            <div class="control-input">
+                @Html.EditorFor(model => model.DeliveryZip)
+                @Html.ValidationMessageFor(model => model.DeliveryZip)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DeliveryDate, new { @class = "control-label" })
+            <div class="control-input">
+                @Html.EditorFor(model => model.DeliveryDate)
+                @Html.ValidationMessageFor(model => model.DeliveryDate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DeliveryTime, new { @class = "control-label" })
+            <div class="control-input">
+                @Html.EditorFor(model => model.DeliveryTime)
+                @Html.ValidationMessageFor(model => model.DeliveryTime)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Save" id="SaveButton" class="btn btn-default" />
+        </div>
+    </div>
+</form>
+@section scripts
+    {
+    <script language="javascript">
+        $(function() {
+            $.ajax('@Url.Api("/api/order")')
+                .then(
+                    function success(order) {
+                        console.log(order);
+                        $('#DeliveryStreetAddress').val(order.deliveryAddress.streetAddress);
+                        $('#DeliveryCity').val(order.deliveryAddress.city);
+                        $('#DeliveryZip').val(order.deliveryAddress.zip);
+                        $('#DeliveryDate').val(order.deliveryDate.substring(0, 10)); //yyyy-MM-dd
+                        $('#DeliveryTime').val(order.deliveryTime.substring(0, 5)); //h\\:mm
+                    },
+                    function fail(request) {
+                        console.log(request);
+                        alert('Request failed (' + request.status + '). ' + request.statusText);
+                    }
+            );
+            $('#OrderDetailsForm').submit(function(event) {
+                $.ajax('@Url.Api("/api/order")',
+                        {
+                            method: 'PUT',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                deliveryAddress: {
+                                    streetAddress: $('#DeliveryStreetAddress').val(),
+                                    city: $('#DeliveryCity').val(),
+                                    zip: $('#DeliveryZip').val()
+                                },
+                                deliveryDate: $('#DeliveryDate').val(),
+                                deliveryTime: $('#DeliveryTime').val()
+                            })
+                        })
+                    .then(
+                        function success() {
+                            console.log("order updated");
+                            window.location.href = '@Url.Page("MyOrder")';
+                        },
+                        function fail(request) {
+                            console.log(request);
+                            alert('Request failed (' + request.status + '). ' + request.statusText);
+                        }
+                    );
+                // stop the form from submitting the normal way and refreshing the page
+                event.preventDefault();
+            });
+
+        });
+    </script>
+}

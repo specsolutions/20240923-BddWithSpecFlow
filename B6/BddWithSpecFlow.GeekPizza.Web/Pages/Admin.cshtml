@@ -1,0 +1,95 @@
+﻿@page
+@using BddWithSpecFlow.GeekPizza.Web.Utils
+@using BddWithSpecFlow.GeekPizza.Web.Services
+@{
+    ViewData["Title"] = "Admin";
+}
+
+<h2>Update restaurant menu (Menu Admin)</h2>
+
+<form id="MenuAdminForm">
+    <div class="form-horizontal">
+        <hr />
+        <div id="ErrorMessage" class="error" style="display: none"></div>
+
+        <div class="form-group">
+            <label class="control-label" for="MenuText">Menu</label>
+            <div class="control-input">
+                <textarea id="MenuText" class="text-box" cols="80" rows="10">
+                </textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Update" id="UpdateButton" class="btn btn-default" />
+        </div>
+    </div>
+</form>
+@section scripts
+{
+    <script language="javascript">
+        $(function() {
+            $.ajax('@Url.Api("/api/admin/GetMenuItems")')
+                .then(
+                    function success(menu) {
+                        console.log(menu);
+                        var menuText = "";
+                        $.each(menu,
+                            function(index, menuItem) {
+                                menuText += menuItem.name + ";" + menuItem.ingredients + ";" + menuItem.calories + ";" +
+                                    (menuItem.inactive ? "inactive" : "") + "\n";
+                            });
+
+                        $('#MenuText').val(menuText);
+                    },
+                    function fail(request) {
+                        console.log(request);
+                        alert('Request failed (' + request.status + '). ' + request.statusText);
+                    }
+                );
+            $('#MenuAdminForm').submit(function(event) {
+                var menuText = $('#MenuText').val();
+                var menu = [];
+                var menuTextLines = menuText.split("\n");
+                $.each(menuTextLines,
+                    function(index, menuTextLine) {
+                        if (menuTextLine.trim()) {
+                            var parts = menuTextLine.split(";");
+                            var menuItem = {
+                                name: parts[0].trim(),
+                                ingredients: parts[1].trim(),
+                                calories: parseInt(parts[2].trim()),
+                                inactive: parts.length > 3 && parts[3] === "inactive"
+                            };
+                            menu.push(menuItem);
+                        }
+                    });
+                $.ajax('@Url.Api("/api/admin/UpdateMenu")',
+                        {
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify(menu)
+                        })
+                    .then(
+                        function success() {
+                            console.log("menu updated");
+                            window.location.href = '@Url.Page("Menu")';
+                        },
+                        function fail(request) {
+                            if (request.status === 400) {
+                                console.log(request);
+                                $('#ErrorMessage').show();
+                                $('#ErrorMessage').html(request.responseText);
+                            } else {
+                                console.log(request);
+                                alert('Request failed (' + request.status + '). ' + request.statusText);
+                            }
+                        }
+                    );
+                // stop the form from submitting the normal way and refreshing the page
+                event.preventDefault();
+            });
+
+        });
+    </script>
+}

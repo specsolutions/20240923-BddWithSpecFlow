@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Geek Pizza</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    </environment>
+</head>
+<body>
+    <div id="Header">
+        <div id="Title">
+            <h1>Geek Pizza</h1>
+            <h3>A BDD course sample application</h3>
+        </div>
+        <ul class="nav">
+            <li class="menu-button">@Html.PageLink("Home", "")</li>
+            <li class="menu-button">@Html.PageLink("Menu", "Menu")</li>
+            <li class="menu-button">@Html.PageLink("My Order", "MyOrder")</li>
+            @if (AuthenticationServices.IsAdmin(Context))
+            {
+                <li class="menu-button admin-button">@Html.PageLink("Admin", "Admin")</li>
+            }
+        </ul>
+        <ul class="nav nav-right">
+            @if (!AuthenticationServices.IsLoggedIn(Context))
+            {
+                <li class="menu-button">@Html.PageLink("Login", "Login")</li>
+                <li class="menu-button">@Html.PageLink("Register", "Register")</li>
+            }
+            else
+            {
+                <li>Logged in as <span id="LoggedInUser">@AuthenticationServices.GetCurrentUserName(Context)</span></li>
+                <li class="menu-button"><a href="#" onclick="logout()">Logout</a></li>
+            }
+        </ul>
+        <div id="TestBar">
+            For testing:
+            <a href="#" onclick="resetData()">[Reset Data]</a>
+            <a href="#" onclick="defaultLogin()">[Default Login]</a>
+            @(AgentServices.IsAgentMode ? "AGENT: " + AgentServices.GetAgent() : "")
+        </div>
+    </div>
+    <div id="Content">
+        @RenderBody()
+    </div>
+    <div id="Footer">
+        <p>Copyright (c) 2017-2023, Spec Solutions, Gaspar Nagy</p>
+        <p>Learn more about our BDD courses at <a href="https://www.specsolutions.eu/services/training/" target="_blank">https://www.specsolutions.eu/services/training/</a>.</p>
+    </div>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+        </script>
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+    <script language="javascript">
+    function logout() {
+        $.ajax('@Url.Api("/api/auth")', { method: 'DELETE' })
+            .then(
+                function success() {
+                    console.log("logged out");
+                    window.location.href = '@Html.HomeUrl()';
+                },
+                function fail(request) {
+                    console.log(request);
+                    alert('Request failed (' + request.status + '). ' + request.statusText);
+                }
+            );
+    }
+    function resetData() {
+        $.ajax('@Url.Api("/api/test/Seed")', { method: 'POST' })
+            .then(
+                function success() {
+                    console.log("database has been reset");
+                    window.location.href = '@Html.HomeUrl()';
+                },
+                function fail(request) {
+                    console.log(request);
+                    alert('Request failed (' + request.status + '). ' + request.statusText);
+                }
+            );
+    }
+    function defaultLogin() {
+        $.ajax('@Url.Api("/api/test/DefaultLogin")', { method: 'POST' })
+            .then(
+                function success() {
+                    console.log("logged in with default user");
+                    window.location.href = '@Html.HomeUrl()';
+                },
+                function fail(request) {
+                    console.log(request);
+                    alert('Request failed (' + request.status + '). ' + request.statusText);
+                }
+            );
+    }
+
+    function is400Error(status) {
+        return status >= 400 && status < 500;
+    }
+
+    </script>
+</body>
+</html>

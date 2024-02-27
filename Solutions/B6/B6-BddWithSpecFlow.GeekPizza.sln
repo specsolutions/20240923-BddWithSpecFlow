@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29609.76
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BddWithSpecFlow.GeekPizza.Web", "BddWithSpecFlow.GeekPizza.Web\BddWithSpecFlow.GeekPizza.Web.csproj", "{BCC4E7F9-9CD9-4E71-8F74-ABA87623FF34}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BddWithSpecFlow.GeekPizza.API.Specs", "BddWithSpecFlow.GeekPizza.API.Specs\BddWithSpecFlow.GeekPizza.API.Specs.csproj", "{EF8B3025-266C-463F-BA46-F66795C67C40}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BCC4E7F9-9CD9-4E71-8F74-ABA87623FF34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCC4E7F9-9CD9-4E71-8F74-ABA87623FF34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCC4E7F9-9CD9-4E71-8F74-ABA87623FF34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCC4E7F9-9CD9-4E71-8F74-ABA87623FF34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF8B3025-266C-463F-BA46-F66795C67C40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF8B3025-266C-463F-BA46-F66795C67C40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF8B3025-266C-463F-BA46-F66795C67C40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF8B3025-266C-463F-BA46-F66795C67C40}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {02C8B3DB-D290-40F6-88DF-38EABFF39937}
+	EndGlobalSection
+EndGlobal

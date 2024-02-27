@@ -1,0 +1,25 @@
+﻿@page
+@using BddWithSpecFlow.GeekPizza.Web.Utils
+@{
+    ViewData["Title"] = "Home";
+}
+
+<h2 class="message"></h2>
+@section scripts
+    {
+    <script language="javascript">
+        $(function() {
+            $.ajax('@Url.Api("/api/home")')
+                .then(
+                    function success(viewModel) {
+                        console.log(viewModel);
+                        $(".message").html(viewModel.mainMessage);
+                    },
+                    function fail(request) {
+                        console.log(request);
+                        alert('Request failed (' + request.status + '). ' + request.statusText);
+                    }
+                );
+        });
+    </script>
+}

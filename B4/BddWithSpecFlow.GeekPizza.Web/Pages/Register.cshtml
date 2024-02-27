@@ -1,0 +1,78 @@
+﻿@page
+@model BddWithSpecFlow.GeekPizza.Web.Models.RegisterInputModel
+@using BddWithSpecFlow.GeekPizza.Web.Utils
+@using BddWithSpecFlow.GeekPizza.Web.Services
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h2>Register</h2>
+
+<form id="RegisterForm">
+    <div class="form-horizontal">
+        <hr />
+        <div id="ErrorMessage" class="error" style="display: none"></div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserName, new { @class = "control-label" })
+            <div class="control-input">
+                @Html.EditorFor(model => model.UserName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, new { @class = "control-label" })
+            <div class="control-input">
+                @Html.EditorFor(model => model.Password)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PasswordReEnter, new { @class = "control-label" })
+            <div class="control-input">
+                @Html.EditorFor(model => model.PasswordReEnter)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Register" id="RegisterButton" class="btn btn-default" />
+        </div>
+    </div>
+</form>
+@section scripts
+{
+    <script language="javascript">
+        $(function() {
+            $('#RegisterForm').submit(function(event) {
+                $.ajax('@Url.Api("/api/user")',
+                        {
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                userName: $('#UserName').val(),
+                                password: $('#Password').val(),
+                                passwordReEnter: $('#PasswordReEnter').val()
+                            })
+                        })
+                    .then(
+                        function success() {
+                            console.log("user registered");
+                            window.location.href = '@Url.Page("Login")';
+                        },
+                        function fail(request) {
+                            if (is400Error(request.status)) {
+                                $('#ErrorMessage').show();
+                                $('#ErrorMessage').html(request.responseText);
+                            } else {
+                                console.log(request);
+                                alert('Request failed (' + request.status + '). ' + request.responseText);
+                            }
+                        }
+                    );
+                // stop the form from submitting the normal way and refreshing the page
+                event.preventDefault();
+            });
+
+        });
+    </script>
+}

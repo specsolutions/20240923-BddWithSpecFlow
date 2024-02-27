@@ -1,0 +1,72 @@
+﻿@page
+@model BddWithSpecFlow.GeekPizza.Web.DataAccess.User
+@using BddWithSpecFlow.GeekPizza.Web.Utils
+@using BddWithSpecFlow.GeekPizza.Web.Services
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2 class="message">Login</h2>
+<p>This dummy login page is for demo purposes only! Don't copy!</p>
+<p>Use @DefaultDataServices.DefaultUserName/@DefaultDataServices.DefaultPassword as credentials (or @DefaultDataServices.AdminUserName/@DefaultDataServices.AdminPassword for login as administrator).</p>
+
+<form id="LoginForm">
+    <div class="form-horizontal">
+        <hr />
+        <div id="ErrorMessage" class="error" style="display: none"></div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, new { @class = "control-label" })
+            <div class="control-input">
+                @Html.EditorFor(model => model.Name)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, new { @class = "control-label" })
+            <div class="control-input">
+                @Html.EditorFor(model => model.Password)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Login" id="LoginButton" class="btn btn-default" />
+        </div>
+    </div>
+</form>
+@section scripts
+    {
+    <script language="javascript">
+        $(function() {
+            $('#LoginForm').submit(function(event) {
+                $('#ErrorMessage').hide();
+                $.ajax('@Url.Api("/api/auth")',
+                        {
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify(
+                                {
+                                    name: $('#Name').val(),
+                                    password: $('#Password').val()
+                                })
+                        })
+                    .then(
+                        function success(authToken) {
+                            console.log("logged in, token: " + authToken);
+                            window.location.href = '@Html.HomeUrl()';
+                        },
+                        function fail(request) {
+                            if (is400Error(request.status)) {
+                                $('#ErrorMessage').show();
+                                $('#ErrorMessage').html(request.responseText);
+                            } else {
+                                console.log(request);
+                                alert('Request failed (' + request.status + '). ' + request.responseText);
+                            }
+                        }
+                    );
+                // stop the form from submitting the normal way and refreshing the page
+                event.preventDefault();
+            });
+        });
+    </script>
+}

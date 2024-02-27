@@ -1,0 +1,78 @@
+@page
+@using BddWithReqnroll.GeekPizza.Web.Utils
+@using BddWithReqnroll.GeekPizza.Web.Services
+@{
+    ViewData["Title"] = "Menu";
+}
+
+<h2 class="message">Menu</h2>
+<table id="MenuTable">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Ingredients</th>
+            <th>Calories</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+@section scripts
+    {
+    <script language="javascript">
+        function getAddCartCell(menuItemName) {
+            var td = $('<td>');
+            @if (AuthenticationServices.IsLoggedIn(HttpContext))
+            {
+                @:td.html('<form class="add-item-form"><select name="size"><option value="Small">Small</option><option value="Medium" selected="selected">Medium</option><option value="Large">Large</option></select> <input type="hidden" name="menuItemName" value="' + menuItemName + '" /><input type="submit" value="Add to my order!" class="btn" /></form>');
+            }
+            return td;
+        }
+
+        $(function() {
+            $.ajax('@Url.Api("/api/menu")')
+                .then(
+                    function success(menu) {
+                        console.log(menu);
+                        var tbody = $("#MenuTable tbody");
+                        menu.items.forEach(function(mi) {
+                            var tr = $('<tr data-item-name="' + mi.name + '">');
+                            tr.append($('<td class="menu-item-name">').html(mi.name));
+                            tr.append($('<td>').html(mi.ingredients));
+                            tr.append($('<td>').html(mi.calories));
+                            tr.append(getAddCartCell(mi.name));
+                            tbody.append(tr);
+                        });
+
+                        $('form.add-item-form').submit(function (event) {
+                            $.ajax('@Url.Api("/api/order")',
+                                    {
+                                        method: 'POST',
+                                        contentType: 'application/json',
+                                        data: JSON.stringify({
+                                            name: $(this).find("[name='menuItemName']").val(),
+                                            size: $(this).find("[name='size']").children("option:selected").val()
+                                        })
+                                    })
+                                .then(
+                                    function success() {
+                                        console.log("order extended");
+                                        window.location.href = '@Url.Page("MyOrder")';
+                                    },
+                                    function fail(request) {
+                                        console.log(request);
+                                        alert('Request failed (' + request.status + '). ' + request.statusText);
+                                    }
+                                );
+                            // stop the form from submitting the normal way and refreshing the page
+                            event.preventDefault();
+                        });
+                    },
+                    function fail(request) {
+                        console.log(request);
+                        alert('Request failed (' + request.status + '). ' + request.statusText);
+                    }
+            );
+        });
+    </script>
+}

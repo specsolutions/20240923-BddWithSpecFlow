@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>BddWithReqnroll.GeekPizza.Specs</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.test.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.test.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- test project dependencies (MsTest) -->
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.2.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.2.2" />
+
+	  <!-- Reqnroll -->
+    <PackageReference Include="Reqnroll.MsTest" Version="1.0.1" />
+
+    <!-- packages for testing ASP.NET Core Apps -->
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.6" />
+
+    <!-- testing utilities -->
+    <PackageReference Include="FluentAssertions" Version="6.12.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="**\.gitkeep" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BddWithReqnroll.GeekPizza.Web\BddWithReqnroll.GeekPizza.Web.csproj" />
+  </ItemGroup>
+
+</Project>

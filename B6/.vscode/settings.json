@@ -1,0 +1,17 @@
+{
+  "explorer.fileNesting.patterns": {
+    "*.feature": "${capture}.feature.cs"
+  },
+  "files.exclude": {
+    "**/obj/": true,
+    "**/bin/": true,
+  },
+  "cucumber.glue": [
+    "BddWithSpecFlow.GeekPizza.Specs/**/*.cs",
+    "BddWithSpecFlow.GeekPizza.API.Specs/**/*.cs",
+  ],
+  "cucumber.features": [
+    "BddWithSpecFlow.GeekPizza.Specs/**/*.feature",
+    "BddWithSpecFlow.GeekPizza.API.Specs/**/*.feature"
+  ]
+}
