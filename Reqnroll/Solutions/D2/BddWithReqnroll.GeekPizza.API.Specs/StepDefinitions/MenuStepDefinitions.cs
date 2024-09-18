@@ -7,7 +7,7 @@ using Reqnroll;
 namespace BddWithReqnroll.GeekPizza.Specs.StepDefinitions
 {
     [Binding]
-    // [Scope(Tag = "webapi")] -- scoping is removed, because we apply dynamic switching
+    // [Scope(Tag = "@webapi")] -- scoping is removed, because we apply dynamic switching
     public class MenuStepDefinitions
     {
         private readonly IMenuDriver _menuApiDriver;

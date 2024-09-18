@@ -6,7 +6,7 @@ using Reqnroll;
 
 namespace BddWithReqnroll.GeekPizza.Specs.StepDefinitions
 {
-    [Binding, Scope(Tag = "webapi")]
+    [Binding, Scope(Tag = "@webapi")]
     public class MenuStepDefinitions
     {
         private readonly MenuApiDriver _menuApiDriver;

@@ -60,17 +60,14 @@ namespace BddWithReqnroll.GeekPizza.Web.Controllers
             if (menuItem == null)
                 throw new HttpResponseException(HttpStatusCode.BadRequest, "Invalid menu item name");
 
-            if (menuItem != null)
+            var pizzaOrderItem = new OrderItem
             {
-                var pizzaOrderItem = new OrderItem
-                {
-                    Name = menuItem.Name,
-                    Size = addToOrderInput.Size
-                };
-                myOrder.OrderItems.Add(pizzaOrderItem);
-                _priceCalculatorService.UpdatePrice(myOrder);
-                db.SaveChanges();
-            }
+                Name = menuItem.Name,
+                Size = addToOrderInput.Size
+            };
+            myOrder.OrderItems.Add(pizzaOrderItem);
+            _priceCalculatorService.UpdatePrice(myOrder);
+            db.SaveChanges();
 
             return myOrder;
         }

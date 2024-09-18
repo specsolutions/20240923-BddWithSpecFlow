@@ -19,18 +19,18 @@
 
   <ItemGroup>
     <!-- test project dependencies (MsTest) -->
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="3.2.2" />
-    <PackageReference Include="MSTest.TestFramework" Version="3.2.2" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.6.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.6.0" />
 
 	  <!-- Reqnroll -->
-    <PackageReference Include="Reqnroll.MsTest" Version="1.0.1" />
+    <PackageReference Include="Reqnroll.MsTest" Version="2.1.0" />
 
     <!-- packages for testing ASP.NET Core Apps -->
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.6" />
 
     <!-- testing utilities -->
-    <PackageReference Include="FluentAssertions" Version="6.12.0" />
+    <PackageReference Include="FluentAssertions" Version="6.12.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 

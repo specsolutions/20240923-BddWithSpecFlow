@@ -73,7 +73,7 @@ namespace BddWithReqnroll.GeekPizza.Web.DataAccess
         }
 
         private readonly IDataPersist _dataPersist =
-            AgentServices.IsAgentMode ? (IDataPersist)new AgentMemoryPersist()
+            AgentServices.IsAgentMode ? new AgentMemoryPersist()
             : new TempFileDataPersist();
 
         private void ClearData()
